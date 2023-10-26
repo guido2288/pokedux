@@ -12,6 +12,7 @@ const PokemonList = ({pokemons , loading}) => {
             id={pokemon.id}
             types={pokemon.types}
             loading={loading}
+            favorite={pokemon.favorite}
             />
         }  )}
 
