@@ -4,21 +4,24 @@ import PokemonList from "./components/PokemonList"
 import Search from "./components/Search"
 import logo from "./statics/logo.svg"
 import { getPokemons } from "./api"
-import { getPokemonsWithDetails } from "./actions"
+import { getPokemonsWithDetails, setLoading } from "./actions"
 
 
 function App() {
 
   const pokemons = useSelector(state => state.pokemons);
+  const loading = useSelector(state => state.loading);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchPokemons = async () => {
+      dispatch(setLoading(true));
       const pokemonsRes = await getPokemons();
-      //const pokemonsDetails = await Promise.all(pokemonsRes.map(pokemon => getPokemonsDetails(pokemon)))
-
-      //dispatch(setPokemons(pokemonsRes));
       dispatch(getPokemonsWithDetails(pokemonsRes))
+      
+      setTimeout(()=> {
+        dispatch(setLoading(false))
+      }, 1000)
     };
 
 
@@ -29,7 +32,7 @@ function App() {
     <div className="bg-gray-100">
       <img src={logo} alt="pokedux" className="p-4 max-h-32 mx-auto"/>
       <Search />
-      <PokemonList pokemons={pokemons}/>
+      <PokemonList pokemons={pokemons} loading={loading}/>
 
     </div>
     
